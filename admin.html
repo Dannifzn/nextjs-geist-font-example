@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin Panel - Reporting System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #111827;
+      color: #f9fafb;
+    }
+    a {
+      color: #f9fafb;
+      text-decoration: underline;
+    }
+    a:hover {
+      color: #9ca3af;
+    }
+    .status-pending {
+      background-color: #fbbf24; /* yellow */
+      color: #1f2937;
+    }
+    .status-processing {
+      background-color: #3b82f6; /* blue */
+      color: #f9fafb;
+    }
+    .status-done {
+      background-color: #22c55e; /* green */
+      color: #f9fafb;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    th, td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #374151;
+      text-align: left;
+      vertical-align: middle;
+    }
+    th {
+      background-color: #1f2937;
+      font-weight: 600;
+    }
+    img.report-image {
+      width: 64px;
+      height: 48px;
+      object-fit: cover;
+      border-radius: 0.375rem;
+    }
+    select.status-select {
+      background-color: #374151;
+      color: #f9fafb;
+      border-radius: 0.375rem;
+      padding: 0.25rem 0.5rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+    }
+    textarea.comment-textarea {
+      width: 100%;
+      background-color: #374151;
+      color: #f9fafb;
+      border-radius: 0.375rem;
+      padding: 0.5rem;
+      resize: vertical;
+      border: none;
+      font-family: inherit;
+      font-size: 1rem;
+    }
+    button.save-btn {
+      background-color: #4b5563;
+      color: #f9fafb;
+      padding: 0.375rem 0.75rem;
+      border-radius: 0.375rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      margin-top: 0.5rem;
+    }
+    button.save-btn:hover {
+      background-color: #6b7280;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-gray-900 px-4 py-8">
+  <nav class="mb-8 flex justify-between items-center max-w-7xl mx-auto">
+    <h1 class="text-2xl font-semibold">Admin Panel</h1>
+    <ul class="flex space-x-6 text-gray-300">
+      <li><a href="dashboard.html" class="hover:text-white">Dashboard</a></li>
+      <li><a href="create-report.html" class="hover:text-white">Create Report</a></li>
+      <li><a href="report-list.html" class="hover:text-white">Report List</a></li>
+      <li><a href="profile.html" class="hover:text-white">Profile</a></li>
+      <li><a href="admin.html" class="hover:text-white font-bold">Admin Panel</a></li>
+      <li><a href="index.html" class="hover:text-white">Logout</a></li>
+    </ul>
+  </nav>
+
+  <main class="max-w-7xl mx-auto bg-gray-800 rounded-lg p-6 shadow-lg overflow-x-auto">
+    <section class="mb-8 grid grid-cols-4 gap-6 text-center">
+      <div class="bg-gray-700 rounded-lg p-4">
+        <h2 class="text-lg font-semibold mb-2">Total Reports</h2>
+        <p class="text-3xl font-bold" id="totalReports">0</p>
+      </div>
+      <div class="bg-yellow-400 rounded-lg p-4">
+        <h2 class="text-lg font-semibold mb-2">Pending</h2>
+        <p class="text-gray-900 text-3xl font-bold" id="pendingReports">0</p>
+      </div>
+      <div class="bg-blue-600 rounded-lg p-4">
+        <h2 class="text-lg font-semibold mb-2">Processing</h2>
+        <p class="text-3xl font-bold" id="processingReports">0</p>
+      </div>
+      <div class="bg-green-600 rounded-lg p-4">
+        <h2 class="text-lg font-semibold mb-2">Done</h2>
+        <p class="text-3xl font-bold" id="doneReports">0</p>
+      </div>
+    </section>
+
+    <section>
+      <table>
+        <thead>
+          <tr>
+            <th>Image</th>
+            <th>Address</th>
+            <th>Status</th>
+            <th>Date</th>
+            <th>Admin Comment</th>
+            <th>Change Status</th>
+            <th>Save</th>
+          </tr>
+        </thead>
+        <tbody id="adminReportTableBody">
+          <!-- Admin report rows inserted by JS -->
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <script>
+    // Demo data for admin reports
+    const adminReports = [
+      {
+        id: 1,
+        imageUrl: 'https://via.placeholder.com/120x90',
+        address: 'Jl. Merdeka No. 10, Jakarta',
+        status: 'pending',
+        date: '2024-06-01',
+        adminComment: '',
+      },
+      {
+        id: 2,
+        imageUrl: 'https://via.placeholder.com/120x90',
+        address: 'Jl. Sudirman No. 5, Bandung',
+        status: 'processing',
+        date: '2024-05-28',
+        adminComment: 'Currently being repaired',
+      },
+      {
+        id: 3,
+        imageUrl: 'https://via.placeholder.com/120x90',
+        address: 'Jl. Thamrin No. 20, Surabaya',
+        status: 'done',
+        date: '2024-05-20',
+        adminComment: 'Repair completed',
+      },
+    ];
+
+    const adminReportTableBody = document.getElementById('adminReportTableBody');
+
+    function createStatusSelect(currentStatus) {
+      const select = document.createElement('select');
+      select.className = 'status-select';
+      ['pending', 'processing', 'done'].forEach((status) => {
+        const option = document.createElement('option');
+        option.value = status;
+        option.textContent = status.charAt(0).toUpperCase() + status.slice(1);
+        if (status === currentStatus) {
+          option.selected = true;
+        }
+        select.appendChild(option);
+      });
+      return select;
+    }
+
+    function createAdminReportRow(report) {
+      const tr = document.createElement('tr');
+
+      const tdImage = document.createElement('td');
+      const img = document.createElement('img');
+      img.src = report.imageUrl;
+      img.alt = 'Report Image';
+      img.className = 'report-image';
+      tdImage.appendChild(img);
+      tr.appendChild(tdImage);
+
+      const tdAddress = document.createElement('td');
+      tdAddress.textContent = report.address;
+      tr.appendChild(tdAddress);
+
+      const tdStatus = document.createElement('td');
+      const statusSelect = createStatusSelect(report.status);
+      tdStatus.appendChild(statusSelect);
+      tr.appendChild(tdStatus);
+
+      const tdDate = document.createElement('td');
+      tdDate.textContent = report.date;
+      tr.appendChild(tdDate);
+
+      const tdAdminComment = document.createElement('td');
+      const commentTextarea = document.createElement('textarea');
+      commentTextarea.className = 'comment-textarea';
+      commentTextarea.rows = 2;
+      commentTextarea.value = report.adminComment;
+      tdAdminComment.appendChild(commentTextarea);
+      tr.appendChild(tdAdminComment);
+
+      const tdSave = document.createElement('td');
+      const saveBtn = document.createElement('button');
+      saveBtn.textContent = 'Save';
+      saveBtn.className = 'save-btn';
+      saveBtn.addEventListener('click', () => {
+        // TODO: Implement save logic (e.g., API call)
+        alert(`Saved changes for report ID ${report.id} (demo)`);
+      });
+      tdSave.appendChild(saveBtn);
+      tr.appendChild(tdSave);
+
+      return tr;
+    }
+
+    function populateAdminReportTable() {
+      adminReportTableBody.innerHTML = '';
+      adminReports.forEach((report) => {
+        const row = createAdminReportRow(report);
+        adminReportTableBody.appendChild(row);
+      });
+    }
+
+    // Demo aggregate stats
+    function updateStats() {
+      const total = adminReports.length;
+      const pending = adminReports.filter(r => r.status === 'pending').length;
+      const processing = adminReports.filter(r => r.status === 'processing').length;
+      const done = adminReports.filter(r => r.status === 'done').length;
+
+      document.getElementById('totalReports').textContent = total;
+      document.getElementById('pendingReports').textContent = pending;
+      document.getElementById('processingReports').textContent = processing;
+      document.getElementById('doneReports').textContent = done;
+    }
+
+    populateAdminReportTable();
+    updateStats();
+  </script>
+</body>
+</html>
