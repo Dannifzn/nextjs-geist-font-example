@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Profile - Reporting System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #111827;
+      color: #f9fafb;
+    }
+    .input-field:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(255 255 255 / 0.5);
+      border-color: #f9fafb;
+    }
+    a {
+      color: #f9fafb;
+      text-decoration: underline;
+    }
+    a:hover {
+      color: #9ca3af;
+    }
+    .profile-photo {
+      width: 96px;
+      height: 96px;
+      border-radius: 9999px;
+      object-fit: cover;
+      border: 2px solid #f9fafb;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-gray-900 px-4 py-8">
+  <nav class="mb-8 flex justify-between items-center max-w-5xl mx-auto">
+    <h1 class="text-2xl font-semibold">Profile</h1>
+    <ul class="flex space-x-6 text-gray-300">
+      <li><a href="dashboard.html" class="hover:text-white">Dashboard</a></li>
+      <li><a href="create-report.html" class="hover:text-white">Create Report</a></li>
+      <li><a href="report-list.html" class="hover:text-white">Report List</a></li>
+      <li><a href="profile.html" class="hover:text-white font-bold">Profile</a></li>
+      <li><a href="index.html" class="hover:text-white">Logout</a></li>
+    </ul>
+  </nav>
+
+  <main class="max-w-3xl mx-auto bg-gray-800 rounded-lg p-8 shadow-lg">
+    <section class="mb-8 flex items-center space-x-6">
+      <img src="https://via.placeholder.com/96" alt="Profile Photo" class="profile-photo" id="profilePhoto" />
+      <div>
+        <h2 class="text-xl font-semibold" id="fullNameDisplay">Full Name</h2>
+        <p class="text-gray-400" id="emailDisplay">email@example.com</p>
+      </div>
+    </section>
+
+    <section>
+      <h3 class="text-lg font-semibold mb-4">Edit Profile</h3>
+      <form id="profileForm" class="space-y-6" novalidate>
+        <div>
+          <label for="fullName" class="block mb-2 font-medium">Full Name</label>
+          <input
+            type="text"
+            id="fullName"
+            name="fullName"
+            required
+            class="input-field w-full rounded-md border border-gray-700 bg-gray-900 px-3 py-2 text-white"
+          />
+          <p class="mt-1 text-sm text-red-500 hidden" id="fullNameError">Full name is required.</p>
+        </div>
+        <div>
+          <label for="email" class="block mb-2 font-medium">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            required
+            class="input-field w-full rounded-md border border-gray-700 bg-gray-900 px-3 py-2 text-white"
+          />
+          <p class="mt-1 text-sm text-red-500 hidden" id="emailError">Valid email is required.</p>
+        </div>
+        <div>
+          <label for="password" class="block mb-2 font-medium">New Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            minlength="6"
+            placeholder="Leave blank to keep current password"
+            class="input-field w-full rounded-md border border-gray-700 bg-gray-900 px-3 py-2 text-white"
+          />
+          <p class="mt-1 text-sm text-red-500 hidden" id="passwordError">Password must be at least 6 characters.</p>
+        </div>
+        <div>
+          <label for="profilePhotoInput" class="block mb-2 font-medium">Profile Photo</label>
+          <input
+            type="file"
+            id="profilePhotoInput"
+            name="profilePhotoInput"
+            accept="image/*"
+            class="text-gray-300"
+          />
+          <p class="mt-1 text-sm text-gray-400">Upload a new profile photo (optional).</p>
+        </div>
+        <button
+          type="submit"
+          class="bg-white text-gray-900 font-semibold rounded-md py-2 px-6 hover:bg-gray-200 transition"
+        >
+          Save Changes
+        </button>
+      </form>
+    </section>
+  </main>
+
+  <script>
+    // Demo: populate profile info with placeholder data
+    const fullNameDisplay = document.getElementById('fullNameDisplay');
+    const emailDisplay = document.getElementById('emailDisplay');
+    const fullNameInput = document.getElementById('fullName');
+    const emailInput = document.getElementById('email');
+    const profilePhoto = document.getElementById('profilePhoto');
+
+    // Placeholder user data
+    const userData = {
+      fullName: 'John Doe',
+      email: 'john.doe@example.com',
+      photoUrl: 'https://via.placeholder.com/96',
+    };
+
+    function populateProfile() {
+      fullNameDisplay.textContent = userData.fullName;
+      emailDisplay.textContent = userData.email;
+      fullNameInput.value = userData.fullName;
+      emailInput.value = userData.email;
+      profilePhoto.src = userData.photoUrl;
+    }
+
+    populateProfile();
+
+    const profileForm = document.getElementById('profileForm');
+    const fullNameError = document.getElementById('fullNameError');
+    const emailError = document.getElementById('emailError');
+    const passwordError = document.getElementById('passwordError');
+    const profilePhotoInput = document.getElementById('profilePhotoInput');
+
+    profileForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      let valid = true;
+
+      if (!fullNameInput.value.trim()) {
+        fullNameError.classList.remove('hidden');
+        valid = false;
+      } else {
+        fullNameError.classList.add('hidden');
+      }
+
+      const emailPattern = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
+      if (!emailPattern.test(emailInput.value.trim())) {
+        emailError.classList.remove('hidden');
+        valid = false;
+      } else {
+        emailError.classList.add('hidden');
+      }
+
+      if (passwordInput.value && passwordInput.value.length > 0 && passwordInput.value.length < 6) {
+        passwordError.classList.remove('hidden');
+        valid = false;
+      } else {
+        passwordError.classList.add('hidden');
+      }
+
+      if (valid) {
+        // TODO: Implement actual profile update logic here (e.g., API call)
+        alert('Profile updated successfully (demo)');
+        // Update displayed info
+        userData.fullName = fullNameInput.value.trim();
+        userData.email = emailInput.value.trim();
+        if (profilePhotoInput.files.length > 0) {
+          const file = profilePhotoInput.files[0];
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            profilePhoto.src = e.target.result;
+          };
+          reader.readAsDataURL(file);
+        }
+        populateProfile();
+        profileForm.reset();
+      }
+    });
+  </script>
+</body>
+</html>
