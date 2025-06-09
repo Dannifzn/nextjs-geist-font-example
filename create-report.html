@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Create Report - Reporting System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #111827;
+      color: #f9fafb;
+    }
+    .input-field:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(255 255 255 / 0.5);
+      border-color: #f9fafb;
+    }
+    a {
+      color: #f9fafb;
+      text-decoration: underline;
+    }
+    a:hover {
+      color: #9ca3af;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-gray-900 px-4 py-8">
+  <nav class="mb-8 flex justify-between items-center max-w-5xl mx-auto">
+    <h1 class="text-2xl font-semibold">Create Report</h1>
+    <ul class="flex space-x-6 text-gray-300">
+      <li><a href="dashboard.html" class="hover:text-white">Dashboard</a></li>
+      <li><a href="create-report.html" class="hover:text-white font-bold">Create Report</a></li>
+      <li><a href="report-list.html" class="hover:text-white">Report List</a></li>
+      <li><a href="profile.html" class="hover:text-white">Profile</a></li>
+      <li><a href="index.html" class="hover:text-white">Logout</a></li>
+    </ul>
+  </nav>
+
+  <main class="max-w-3xl mx-auto bg-gray-800 rounded-lg p-8 shadow-lg">
+    <form id="reportForm" class="space-y-6" novalidate enctype="multipart/form-data">
+      <div>
+        <label for="image" class="block mb-2 font-medium">Upload Image (required)</label>
+        <input
+          type="file"
+          id="image"
+          name="image"
+          accept="image/*"
+          required
+          class="text-gray-300"
+        />
+        <p class="mt-1 text-sm text-red-500 hidden" id="imageError">Image is required.</p>
+      </div>
+      <div>
+        <label for="description" class="block mb-2 font-medium">Description / Address</label>
+        <textarea
+          id="description"
+          name="description"
+          rows="3"
+          class="input-field w-full rounded-md border border-gray-700 bg-gray-900 px-3 py-2 text-white resize-none"
+          placeholder="Enter detailed description or address"
+        ></textarea>
+      </div>
+      <div>
+        <label class="block mb-2 font-medium">Location Coordinates</label>
+        <div class="flex space-x-4">
+          <input
+            type="text"
+            id="latitude"
+            name="latitude"
+            readonly
+            placeholder="Latitude"
+            class="input-field w-1/2 rounded-md border border-gray-700 bg-gray-900 px-3 py-2 text-white"
+          />
+          <input
+            type="text"
+            id="longitude"
+            name="longitude"
+            readonly
+            placeholder="Longitude"
+            class="input-field w-1/2 rounded-md border border-gray-700 bg-gray-900 px-3 py-2 text-white"
+          />
+        </div>
+        <button
+          type="button"
+          id="getLocationBtn"
+          class="mt-2 bg-white text-gray-900 font-semibold rounded-md py-1 px-4 hover:bg-gray-200 transition"
+        >
+          Get Current Location
+        </button>
+        <p class="mt-1 text-sm text-red-500 hidden" id="locationError">Unable to get location. Please allow location access.</p>
+      </div>
+      <button
+        type="submit"
+        class="w-full bg-white text-gray-900 font-semibold rounded-md py-2 hover:bg-gray-200 transition"
+      >
+        Send Report
+      </button>
+    </form>
+  </main>
+
+  <script>
+    const reportForm = document.getElementById('reportForm');
+    const imageInput = document.getElementById('image');
+    const imageError = document.getElementById('imageError');
+    const latitudeInput = document.getElementById('latitude');
+    const longitudeInput = document.getElementById('longitude');
+    const locationError = document.getElementById('locationError');
+    const getLocationBtn = document.getElementById('getLocationBtn');
+
+    getLocationBtn.addEventListener('click', () => {
+      locationError.classList.add('hidden');
+      if (!navigator.geolocation) {
+        locationError.textContent = 'Geolocation is not supported by your browser.';
+        locationError.classList.remove('hidden');
+        return;
+      }
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          latitudeInput.value = position.coords.latitude.toFixed(6);
+          longitudeInput.value = position.coords.longitude.toFixed(6);
+        },
+        () => {
+          locationError.textContent = 'Unable to retrieve your location.';
+          locationError.classList.remove('hidden');
+        }
+      );
+    });
+
+    reportForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      let valid = true;
+
+      if (imageInput.files.length === 0) {
+        imageError.classList.remove('hidden');
+        valid = false;
+      } else {
+        imageError.classList.add('hidden');
+      }
+
+      if (valid) {
+        // TODO: Implement actual report submission logic here (e.g., API call)
+        alert('Report submitted successfully (demo)');
+        // Redirect to report list page for demo
+        window.location.href = 'report-list.html';
+      }
+    });
+  </script>
+</body>
+</html>
