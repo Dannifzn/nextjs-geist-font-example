@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Profile - Reporting System</title>
+  <title>Profile - Road Report System</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
@@ -14,178 +14,177 @@
     }
     .input-field:focus {
       outline: none;
-      box-shadow: 0 0 0 3px rgba(255 255 255 / 0.5);
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5);
       border-color: #f9fafb;
-    }
-    a {
-      color: #f9fafb;
-      text-decoration: underline;
-    }
-    a:hover {
-      color: #9ca3af;
-    }
-    .profile-photo {
-      width: 96px;
-      height: 96px;
-      border-radius: 9999px;
-      object-fit: cover;
-      border: 2px solid #f9fafb;
     }
   </style>
 </head>
-<body class="min-h-screen bg-gray-900 px-4 py-8">
-  <nav class="mb-8 flex justify-between items-center max-w-5xl mx-auto">
-    <h1 class="text-2xl font-semibold">Profile</h1>
-    <ul class="flex space-x-6 text-gray-300">
-      <li><a href="dashboard.html" class="hover:text-white">Dashboard</a></li>
-      <li><a href="create-report.html" class="hover:text-white">Create Report</a></li>
-      <li><a href="report-list.html" class="hover:text-white">Report List</a></li>
-      <li><a href="profile.html" class="hover:text-white font-bold">Profile</a></li>
-      <li><a href="index.html" class="hover:text-white">Logout</a></li>
-    </ul>
+<body class="min-h-screen bg-gray-900">
+  <!-- Navigation -->
+  <nav class="bg-gray-800 border-b border-gray-700">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center">
+          <h1 class="text-xl font-semibold">Road Report System</h1>
+        </div>
+        <div class="flex items-center space-x-6">
+          <a href="dashboard.html" class="text-gray-300 hover:text-white">Dashboard</a>
+          <a href="create-report.html" class="text-gray-300 hover:text-white">Create Report</a>
+          <a href="report-list.html" class="text-gray-300 hover:text-white">Report List</a>
+          <a href="profile.html" class="text-white font-semibold">Profile</a>
+          <a href="index.html" class="text-gray-300 hover:text-white">Logout</a>
+        </div>
+      </div>
+    </div>
   </nav>
 
-  <main class="max-w-3xl mx-auto bg-gray-800 rounded-lg p-8 shadow-lg">
-    <section class="mb-8 flex items-center space-x-6">
-      <img src="https://via.placeholder.com/96" alt="Profile Photo" class="profile-photo" id="profilePhoto" />
-      <div>
-        <h2 class="text-xl font-semibold" id="fullNameDisplay">Full Name</h2>
-        <p class="text-gray-400" id="emailDisplay">email@example.com</p>
+  <!-- Main Content -->
+  <main class="max-w-3xl mx-auto px-4 py-8">
+    <div class="bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+      <!-- Profile Header -->
+      <div class="p-6 border-b border-gray-700">
+        <div class="flex items-center space-x-4">
+          <div class="w-20 h-20 rounded-full bg-gray-700 flex items-center justify-center text-2xl font-semibold">
+            JD
+          </div>
+          <div>
+            <h1 class="text-2xl font-semibold">John Doe</h1>
+            <p class="text-gray-400">Member since January 2024</p>
+          </div>
+        </div>
       </div>
-    </section>
 
-    <section>
-      <h3 class="text-lg font-semibold mb-4">Edit Profile</h3>
-      <form id="profileForm" class="space-y-6" novalidate>
-        <div>
-          <label for="fullName" class="block mb-2 font-medium">Full Name</label>
-          <input
-            type="text"
-            id="fullName"
-            name="fullName"
-            required
-            class="input-field w-full rounded-md border border-gray-700 bg-gray-900 px-3 py-2 text-white"
-          />
-          <p class="mt-1 text-sm text-red-500 hidden" id="fullNameError">Full name is required.</p>
+      <!-- Profile Form -->
+      <form id="profileForm" class="p-6 space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Personal Information -->
+          <div class="space-y-6">
+            <h2 class="text-lg font-semibold">Personal Information</h2>
+            
+            <div>
+              <label for="fullName" class="block mb-2 font-medium">Full Name</label>
+              <input
+                type="text"
+                id="fullName"
+                value="John Doe"
+                class="input-field w-full rounded-md border border-gray-700 bg-gray-900 px-4 py-2 text-white"
+              />
+            </div>
+
+            <div>
+              <label for="email" class="block mb-2 font-medium">Email</label>
+              <input
+                type="email"
+                id="email"
+                value="john.doe@example.com"
+                class="input-field w-full rounded-md border border-gray-700 bg-gray-900 px-4 py-2 text-white"
+              />
+            </div>
+
+            <div>
+              <label for="phone" class="block mb-2 font-medium">Phone Number</label>
+              <input
+                type="tel"
+                id="phone"
+                value="+1234567890"
+                class="input-field w-full rounded-md border border-gray-700 bg-gray-900 px-4 py-2 text-white"
+              />
+            </div>
+          </div>
+
+          <!-- Account Settings -->
+          <div class="space-y-6">
+            <h2 class="text-lg font-semibold">Account Settings</h2>
+            
+            <div>
+              <label for="username" class="block mb-2 font-medium">Username</label>
+              <input
+                type="text"
+                id="username"
+                value="johndoe"
+                class="input-field w-full rounded-md border border-gray-700 bg-gray-900 px-4 py-2 text-white"
+              />
+            </div>
+
+            <div>
+              <label for="currentPassword" class="block mb-2 font-medium">Current Password</label>
+              <input
+                type="password"
+                id="currentPassword"
+                placeholder="Enter current password"
+                class="input-field w-full rounded-md border border-gray-700 bg-gray-900 px-4 py-2 text-white"
+              />
+            </div>
+
+            <div>
+              <label for="newPassword" class="block mb-2 font-medium">New Password</label>
+              <input
+                type="password"
+                id="newPassword"
+                placeholder="Enter new password"
+                class="input-field w-full rounded-md border border-gray-700 bg-gray-900 px-4 py-2 text-white"
+              />
+            </div>
+
+            <div>
+              <label for="confirmPassword" class="block mb-2 font-medium">Confirm New Password</label>
+              <input
+                type="password"
+                id="confirmPassword"
+                placeholder="Confirm new password"
+                class="input-field w-full rounded-md border border-gray-700 bg-gray-900 px-4 py-2 text-white"
+              />
+            </div>
+          </div>
         </div>
-        <div>
-          <label for="email" class="block mb-2 font-medium">Email</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            required
-            class="input-field w-full rounded-md border border-gray-700 bg-gray-900 px-3 py-2 text-white"
-          />
-          <p class="mt-1 text-sm text-red-500 hidden" id="emailError">Valid email is required.</p>
+
+        <!-- Notification Settings -->
+        <div class="space-y-4">
+          <h2 class="text-lg font-semibold">Notification Settings</h2>
+          
+          <div class="flex items-center justify-between p-4 bg-gray-900 rounded-lg">
+            <div>
+              <h3 class="font-medium">Email Notifications</h3>
+              <p class="text-sm text-gray-400">Receive updates about your reports via email</p>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" class="sr-only peer" checked>
+              <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+            </label>
+          </div>
+
+          <div class="flex items-center justify-between p-4 bg-gray-900 rounded-lg">
+            <div>
+              <h3 class="font-medium">SMS Notifications</h3>
+              <p class="text-sm text-gray-400">Receive updates about your reports via SMS</p>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" class="sr-only peer">
+              <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+            </label>
+          </div>
         </div>
-        <div>
-          <label for="password" class="block mb-2 font-medium">New Password</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            minlength="6"
-            placeholder="Leave blank to keep current password"
-            class="input-field w-full rounded-md border border-gray-700 bg-gray-900 px-3 py-2 text-white"
-          />
-          <p class="mt-1 text-sm text-red-500 hidden" id="passwordError">Password must be at least 6 characters.</p>
+
+        <!-- Save Button -->
+        <div class="flex justify-end">
+          <button
+            type="submit"
+            class="px-6 py-2 bg-white text-gray-900 font-semibold rounded-md hover:bg-gray-100 transition"
+          >
+            Save Changes
+          </button>
         </div>
-        <div>
-          <label for="profilePhotoInput" class="block mb-2 font-medium">Profile Photo</label>
-          <input
-            type="file"
-            id="profilePhotoInput"
-            name="profilePhotoInput"
-            accept="image/*"
-            class="text-gray-300"
-          />
-          <p class="mt-1 text-sm text-gray-400">Upload a new profile photo (optional).</p>
-        </div>
-        <button
-          type="submit"
-          class="bg-white text-gray-900 font-semibold rounded-md py-2 px-6 hover:bg-gray-200 transition"
-        >
-          Save Changes
-        </button>
       </form>
-    </section>
+    </div>
   </main>
 
   <script>
-    // Demo: populate profile info with placeholder data
-    const fullNameDisplay = document.getElementById('fullNameDisplay');
-    const emailDisplay = document.getElementById('emailDisplay');
-    const fullNameInput = document.getElementById('fullName');
-    const emailInput = document.getElementById('email');
-    const profilePhoto = document.getElementById('profilePhoto');
-
-    // Placeholder user data
-    const userData = {
-      fullName: 'John Doe',
-      email: 'john.doe@example.com',
-      photoUrl: 'https://via.placeholder.com/96',
-    };
-
-    function populateProfile() {
-      fullNameDisplay.textContent = userData.fullName;
-      emailDisplay.textContent = userData.email;
-      fullNameInput.value = userData.fullName;
-      emailInput.value = userData.email;
-      profilePhoto.src = userData.photoUrl;
-    }
-
-    populateProfile();
-
     const profileForm = document.getElementById('profileForm');
-    const fullNameError = document.getElementById('fullNameError');
-    const emailError = document.getElementById('emailError');
-    const passwordError = document.getElementById('passwordError');
-    const profilePhotoInput = document.getElementById('profilePhotoInput');
-
+    
     profileForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      let valid = true;
-
-      if (!fullNameInput.value.trim()) {
-        fullNameError.classList.remove('hidden');
-        valid = false;
-      } else {
-        fullNameError.classList.add('hidden');
-      }
-
-      const emailPattern = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
-      if (!emailPattern.test(emailInput.value.trim())) {
-        emailError.classList.remove('hidden');
-        valid = false;
-      } else {
-        emailError.classList.add('hidden');
-      }
-
-      if (passwordInput.value && passwordInput.value.length > 0 && passwordInput.value.length < 6) {
-        passwordError.classList.remove('hidden');
-        valid = false;
-      } else {
-        passwordError.classList.add('hidden');
-      }
-
-      if (valid) {
-        // TODO: Implement actual profile update logic here (e.g., API call)
-        alert('Profile updated successfully (demo)');
-        // Update displayed info
-        userData.fullName = fullNameInput.value.trim();
-        userData.email = emailInput.value.trim();
-        if (profilePhotoInput.files.length > 0) {
-          const file = profilePhotoInput.files[0];
-          const reader = new FileReader();
-          reader.onload = function (e) {
-            profilePhoto.src = e.target.result;
-          };
-          reader.readAsDataURL(file);
-        }
-        populateProfile();
-        profileForm.reset();
-      }
+      // Here you would typically send the updated profile data to your backend
+      alert('Profile updated successfully!');
     });
   </script>
 </body>
