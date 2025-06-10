@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Create Report - Reporting System</title>
+  <title>Create Report - Road Report System</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
@@ -14,137 +14,186 @@
     }
     .input-field:focus {
       outline: none;
-      box-shadow: 0 0 0 3px rgba(255 255 255 / 0.5);
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5);
       border-color: #f9fafb;
     }
-    a {
-      color: #f9fafb;
-      text-decoration: underline;
-    }
-    a:hover {
-      color: #9ca3af;
+    #map {
+      height: 300px;
+      width: 100%;
+      border-radius: 0.5rem;
     }
   </style>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
-<body class="min-h-screen bg-gray-900 px-4 py-8">
-  <nav class="mb-8 flex justify-between items-center max-w-5xl mx-auto">
-    <h1 class="text-2xl font-semibold">Create Report</h1>
-    <ul class="flex space-x-6 text-gray-300">
-      <li><a href="dashboard.html" class="hover:text-white">Dashboard</a></li>
-      <li><a href="create-report.html" class="hover:text-white font-bold">Create Report</a></li>
-      <li><a href="report-list.html" class="hover:text-white">Report List</a></li>
-      <li><a href="profile.html" class="hover:text-white">Profile</a></li>
-      <li><a href="index.html" class="hover:text-white">Logout</a></li>
-    </ul>
+<body class="min-h-screen bg-gray-900">
+  <!-- Navigation -->
+  <nav class="bg-gray-800 border-b border-gray-700">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center">
+          <h1 class="text-xl font-semibold">Road Report System</h1>
+        </div>
+        <div class="flex items-center space-x-6">
+          <a href="dashboard.html" class="text-gray-300 hover:text-white">Dashboard</a>
+          <a href="create-report.html" class="text-white font-semibold">Create Report</a>
+          <a href="report-list.html" class="text-gray-300 hover:text-white">Report List</a>
+          <a href="profile.html" class="text-gray-300 hover:text-white">Profile</a>
+          <a href="index.html" class="text-gray-300 hover:text-white">Logout</a>
+        </div>
+      </div>
+    </div>
   </nav>
 
-  <main class="max-w-3xl mx-auto bg-gray-800 rounded-lg p-8 shadow-lg">
-    <form id="reportForm" class="space-y-6" novalidate enctype="multipart/form-data">
-      <div>
-        <label for="image" class="block mb-2 font-medium">Upload Image (required)</label>
-        <input
-          type="file"
-          id="image"
-          name="image"
-          accept="image/*"
-          required
-          class="text-gray-300"
-        />
-        <p class="mt-1 text-sm text-red-500 hidden" id="imageError">Image is required.</p>
-      </div>
-      <div>
-        <label for="description" class="block mb-2 font-medium">Description / Address</label>
-        <textarea
-          id="description"
-          name="description"
-          rows="3"
-          class="input-field w-full rounded-md border border-gray-700 bg-gray-900 px-3 py-2 text-white resize-none"
-          placeholder="Enter detailed description or address"
-        ></textarea>
-      </div>
-      <div>
-        <label class="block mb-2 font-medium">Location Coordinates</label>
-        <div class="flex space-x-4">
-          <input
-            type="text"
-            id="latitude"
-            name="latitude"
-            readonly
-            placeholder="Latitude"
-            class="input-field w-1/2 rounded-md border border-gray-700 bg-gray-900 px-3 py-2 text-white"
-          />
-          <input
-            type="text"
-            id="longitude"
-            name="longitude"
-            readonly
-            placeholder="Longitude"
-            class="input-field w-1/2 rounded-md border border-gray-700 bg-gray-900 px-3 py-2 text-white"
-          />
+  <!-- Main Content -->
+  <main class="max-w-3xl mx-auto px-4 py-8">
+    <div class="bg-gray-800 rounded-lg shadow-lg p-6">
+      <h2 class="text-2xl font-semibold mb-6">Create New Report</h2>
+      
+      <form id="reportForm" class="space-y-6">
+        <!-- Image Upload -->
+        <div>
+          <label class="block mb-2 font-medium">Upload Images</label>
+          <div class="flex items-center justify-center w-full">
+            <label class="flex flex-col w-full h-32 border-2 border-gray-600 border-dashed rounded-lg cursor-pointer hover:bg-gray-700/50">
+              <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                <p class="mb-2 text-sm text-gray-400">Drop images here or click to upload</p>
+                <p class="text-xs text-gray-400">PNG, JPG up to 10MB</p>
+              </div>
+              <input type="file" class="hidden" id="imageInput" accept="image/*" multiple />
+            </label>
+          </div>
+          <div id="imagePreview" class="mt-4 grid grid-cols-4 gap-4"></div>
         </div>
+
+        <!-- Report Type -->
+        <div>
+          <label for="reportType" class="block mb-2 font-medium">Report Type</label>
+          <select id="reportType" class="input-field w-full rounded-md border border-gray-700 bg-gray-800 px-4 py-3 text-white">
+            <option value="pothole">Pothole</option>
+            <option value="damage">Road Damage</option>
+            <option value="lighting">Street Light Issue</option>
+            <option value="signage">Road Sign Issue</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <!-- Description -->
+        <div>
+          <label for="description" class="block mb-2 font-medium">Description</label>
+          <textarea
+            id="description"
+            rows="4"
+            class="input-field w-full rounded-md border border-gray-700 bg-gray-800 px-4 py-3 text-white resize-none"
+            placeholder="Describe the issue in detail..."
+          ></textarea>
+        </div>
+
+        <!-- Location -->
+        <div>
+          <label class="block mb-2 font-medium">Location</label>
+          <div id="map" class="mb-4"></div>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label for="latitude" class="block text-sm text-gray-400 mb-1">Latitude</label>
+              <input
+                type="text"
+                id="latitude"
+                readonly
+                class="input-field w-full rounded-md border border-gray-700 bg-gray-800 px-4 py-2 text-white"
+              />
+            </div>
+            <div>
+              <label for="longitude" class="block text-sm text-gray-400 mb-1">Longitude</label>
+              <input
+                type="text"
+                id="longitude"
+                readonly
+                class="input-field w-full rounded-md border border-gray-700 bg-gray-800 px-4 py-2 text-white"
+              />
+            </div>
+          </div>
+          <button
+            type="button"
+            id="getCurrentLocation"
+            class="mt-2 px-4 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-600 transition"
+          >
+            Get Current Location
+          </button>
+        </div>
+
+        <!-- Submit Button -->
         <button
-          type="button"
-          id="getLocationBtn"
-          class="mt-2 bg-white text-gray-900 font-semibold rounded-md py-1 px-4 hover:bg-gray-200 transition"
+          type="submit"
+          class="w-full bg-white text-gray-900 font-semibold rounded-md py-3 hover:bg-gray-100 transition"
         >
-          Get Current Location
+          Submit Report
         </button>
-        <p class="mt-1 text-sm text-red-500 hidden" id="locationError">Unable to get location. Please allow location access.</p>
-      </div>
-      <button
-        type="submit"
-        class="w-full bg-white text-gray-900 font-semibold rounded-md py-2 hover:bg-gray-200 transition"
-      >
-        Send Report
-      </button>
-    </form>
+      </form>
+    </div>
   </main>
 
   <script>
-    const reportForm = document.getElementById('reportForm');
-    const imageInput = document.getElementById('image');
-    const imageError = document.getElementById('imageError');
-    const latitudeInput = document.getElementById('latitude');
-    const longitudeInput = document.getElementById('longitude');
-    const locationError = document.getElementById('locationError');
-    const getLocationBtn = document.getElementById('getLocationBtn');
+    // Initialize map
+    const map = L.map('map').setView([0, 0], 2);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
 
-    getLocationBtn.addEventListener('click', () => {
-      locationError.classList.add('hidden');
-      if (!navigator.geolocation) {
-        locationError.textContent = 'Geolocation is not supported by your browser.';
-        locationError.classList.remove('hidden');
-        return;
+    let marker;
+
+    // Handle location button
+    document.getElementById('getCurrentLocation').addEventListener('click', () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords;
+            document.getElementById('latitude').value = latitude.toFixed(6);
+            document.getElementById('longitude').value = longitude.toFixed(6);
+            
+            // Update map
+            if (marker) {
+              marker.setLatLng([latitude, longitude]);
+            } else {
+              marker = L.marker([latitude, longitude]).addTo(map);
+            }
+            map.setView([latitude, longitude], 15);
+          },
+          (error) => {
+            alert('Error getting location: ' + error.message);
+          }
+        );
+      } else {
+        alert('Geolocation is not supported by your browser');
       }
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          latitudeInput.value = position.coords.latitude.toFixed(6);
-          longitudeInput.value = position.coords.longitude.toFixed(6);
-        },
-        () => {
-          locationError.textContent = 'Unable to retrieve your location.';
-          locationError.classList.remove('hidden');
-        }
-      );
     });
 
-    reportForm.addEventListener('submit', (e) => {
+    // Handle image upload preview
+    const imageInput = document.getElementById('imageInput');
+    const imagePreview = document.getElementById('imagePreview');
+
+    imageInput.addEventListener('change', function(e) {
+      imagePreview.innerHTML = '';
+      [...e.target.files].forEach(file => {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const div = document.createElement('div');
+          div.className = 'relative aspect-square';
+          div.innerHTML = `
+            <img src="${e.target.result}" class="w-full h-full object-cover rounded-lg" />
+          `;
+          imagePreview.appendChild(div);
+        }
+        reader.readAsDataURL(file);
+      });
+    });
+
+    // Handle form submission
+    document.getElementById('reportForm').addEventListener('submit', function(e) {
       e.preventDefault();
-      let valid = true;
-
-      if (imageInput.files.length === 0) {
-        imageError.classList.remove('hidden');
-        valid = false;
-      } else {
-        imageError.classList.add('hidden');
-      }
-
-      if (valid) {
-        // TODO: Implement actual report submission logic here (e.g., API call)
-        alert('Report submitted successfully (demo)');
-        // Redirect to report list page for demo
-        window.location.href = 'report-list.html';
-      }
+      // Here you would typically send the data to your backend
+      alert('Report submitted successfully!');
+      window.location.href = 'report-list.html';
     });
   </script>
 </body>
